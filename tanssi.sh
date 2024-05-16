@@ -1,0 +1,25 @@
+docker run -d --network="host" --name tanssi -v "/var/lib/dancebox:/data" \
+-u $(id -u ${USER}):$(id -g ${USER}) \
+moondancelabs/tanssi \
+--chain=dancebox \
+--name=ssonix \
+--sync=warp \
+--base-path=/data/para \
+--state-pruning=2000 \
+--blocks-pruning=2000 \
+--collator \
+--telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
+--database paritydb \
+-- \
+--name=ssonix-prod \
+--base-path=/data/container \
+--telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
+-- \
+--chain=westend_moonbase_relay_testnet \
+--name=ssonix-mid \
+--sync=fast \
+--base-path=/data/relay \
+--state-pruning=2000 \
+--blocks-pruning=2000 \
+--telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
+--database paritydb
