@@ -48,7 +48,7 @@ function check_go_installation() {
 
 # 节点安装功能
 function install_node() {
-#
+
 #    install_nodejs_and_npm
 #    install_pm2
 
@@ -198,7 +198,7 @@ function install_storage_node() {
     sudo apt-get install clang cmake build-essential git screen cargo -y
 
 
-#    安装Go
+# 安装Go
 #    sudo rm -rf /usr/local/go
 #    curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 #    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
@@ -219,6 +219,7 @@ cargo build --release
 #后台运行
 cd run
 
+
 read -p "请输入你想导入的EVM钱包私钥，不要有0x: " minerkey
 
 sed -i "s/miner_key = \"\"/miner_key = \"$minerkey\"/" config.toml
@@ -238,6 +239,7 @@ function install_storage_kv() {
 
 # 克隆仓库
 git clone https://github.com/0glabs/0g-storage-kv.git
+
 
 #进入对应目录构建
 cd 0g-storage-kv
