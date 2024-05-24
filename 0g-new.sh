@@ -288,7 +288,7 @@ read -p "请输入钱包名称: " wallet_name
 
 # 查看存储节点同步状态
 function check_storage_status() {
-    tail -f "$(find ~/0g-storage-node/run/log/ -type f -printf '%T+ %p\n' | sort -r | head -n 1 | cut -d' ' -f2-)"
+    tail -f "$(find ~/node/0gdata/0g-storage-node/run/log/ -type f -printf '%T+ %p\n' | sort -r | head -n 1 | cut -d' ' -f2-)"
 }
 
 # 查看存储节点同步状态
