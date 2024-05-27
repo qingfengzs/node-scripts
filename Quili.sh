@@ -53,7 +53,7 @@ sysctl -p
 echo "sysctl配置已重新加载"
 
 # 更新并升级Ubuntu软件包
-sudo apt update && sudo apt -y upgrade 
+sudo apt update && sudo apt -y upgrade
 
 # 安装wget、screen和git等组件
 sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
@@ -61,7 +61,7 @@ sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
 # 安装GVM
 #bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 #source /root/.gvm/scripts/gvm
-
+#
 #gvm install go1.4 -B
 #gvm use go1.4
 #export GOROOT_BOOTSTRAP=$GOROOT
@@ -75,13 +75,14 @@ sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
 git clone https://github.com/quilibriumnetwork/ceremonyclient
 
 # 进入ceremonyclient/node目录
-cd ceremonyclient/node 
+cd ceremonyclient/node
+git switch release
 
 # 赋予执行权限
-chmod +x poor_mans_cd.sh
+chmod +x release_autorun.sh
 
 # 创建一个screen会话并运行命令
-screen -dmS Quili bash -c './poor_mans_cd.sh'
+screen -dmS Quili bash -c './release_autorun.sh'
 
 }
 
@@ -117,7 +118,7 @@ sysctl -p
 echo "sysctl配置已重新加载"
 
 # 更新并升级Ubuntu软件包
-sudo apt update && sudo apt -y upgrade 
+sudo apt update && sudo apt -y upgrade
 
 # 安装wget、screen和git等组件
 sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
@@ -125,7 +126,7 @@ sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
 # 安装GVM
 #bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 #source /root/.gvm/scripts/gvm
-
+#
 #gvm install go1.4 -B
 #gvm use go1.4
 #export GOROOT_BOOTSTRAP=$GOROOT
@@ -139,7 +140,7 @@ sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
 git clone https://github.com/quilibriumnetwork/ceremonyclient
 
 # 进入ceremonyclient/node目录
-cd ceremonyclient/node 
+cd ceremonyclient/node
 
 # 构建服务
 GOEXPERIMENT=arenas go install ./...
@@ -153,7 +154,7 @@ Description=Ceremony Client GO App Service
 Type=simple
 Restart=always
 RestartSec=5S
-WorkingDirectory=/root/ceremonyclient/node
+WorkingDirectory=/root/node/quili/ceremonyclient/node
 Environment=GOEXPERIMENT=arenas
 ExecStart=/root/.gvm/pkgsets/go1.20.2/global/bin/node ./...
 
@@ -185,9 +186,34 @@ function view_logs() {
 # 查看常规版本节点日志
 function check_service_status() {
     screen -r Quili
-   
+
 }
 
+# 独立启动
+function run_node() {
+    screen -dmS Quili bash -c 'cd ~/node/quili/ceremonyclient/node && ./release_autorun.sh'
+
+    echo "=======================已启动quilibrium 挖矿 ========================================="
+}
+
+function add_snapshots() {
+wget http://94.16.31.160/store.tar.gz
+tar -xzf store.tar.gz
+cd ~/node/quili/ceremonyclient/node/.config
+rm -rf store
+cd ~
+mv store ~/node/quili/ceremonyclient/node/.config
+
+screen -dmS Quili bash -c 'cd ~/node/quili/ceremonyclient/node && ./release_autorun.sh'
+}
+
+function backup_set() {
+mkdir -p ~/node/quili/backup
+cat ~/node/quili/ceremonyclient/node/.config/config.yml > ~/node/quili/backup/config.txt
+cat ~/node/quili/ceremonyclient/node/.config/keys.yml > ~/node/quili/backup/keys.txt
+
+echo "=======================备份完成，请执行cd ~/backup 查看备份文件========================================="
+}
 
 
 # 主菜单
@@ -204,15 +230,21 @@ function main_menu() {
     echo "4. 查看服务版本节点日志"
     echo "5. 查看服务版本服务状态"
     echo "6. 设置快捷键的功能"
-    read -p "请输入选项（1-3）: " OPTION
+    echo "=======================单独使用功能============================="
+    echo "7. 独立启动挖矿（安装好常规节点后搭配使用）"
+    echo "=========================备份功能================================"
+    echo "8. 备份文件"
+    read -p "请输入选项（1-8）: " OPTION
 
     case $OPTION in
     1) install_node ;;
-    2) check_service_status ;;  
-    3) install_node_service ;; 
-    4) view_logs ;; 
-    5) check_ceremonyclient_service_status ;; 
-    6) check_and_set_alias ;;  
+    2) check_service_status ;;
+    3) install_node_service ;;
+    4) view_logs ;;
+    5) check_ceremonyclient_service_status ;;
+    6) check_and_set_alias ;;
+    7) run_node ;;
+    8) backup_set ;;
     *) echo "无效选项。" ;;
     esac
 }
