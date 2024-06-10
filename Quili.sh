@@ -84,6 +84,14 @@ chmod +x release_autorun.sh
 # 创建一个screen会话并运行命令
 screen -dmS Quili bash -c './release_autorun.sh'
 
+
+#  listenGrpcMultiaddr: "/ip4/127.0.0.1/tcp/8337"
+#  listenRESTMultiaddr: "/ip4/127.0.0.1/tcp/8338"
+#screen -X -S Quili quit  && cp -R ceremonyclient/node/.config ./ && \
+#mv ceremonyclient bak_ceremonyclient && git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git &&  \
+#cp -R .config ceremonyclient/node && cd ceremonyclient && git switch release-cdn && cd node/.config && apt update && apt install cpulimit gawk && vim config.yml
+#sudo rm -rf /usr/local/go && wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz && sudo tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
+
 }
 
 
