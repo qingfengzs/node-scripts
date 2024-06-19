@@ -83,19 +83,29 @@ chmod +x release_autorun.sh
 
 # 创建一个screen会话并运行命令
 screen -dmS Quili bash -c './release_autorun.sh'
-
+# dataWorkerMemoryLimit: 4294967296
 
 #  listenGrpcMultiaddr: "/ip4/127.0.0.1/tcp/8337"
 #  listenRESTMultiaddr: "/ip4/127.0.0.1/tcp/8338"
-#screen -X -S Quili quit  && cp -R ceremonyclient/node/.config ./ && \
-#mv ceremonyclient bak_ceremonyclient && git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git &&  \
-#cp -R .config ceremonyclient/node && cd ceremonyclient && git switch release-cdn && cd node/.config && apt update && apt install cpulimit gawk && vim config.yml
-#sudo rm -rf /usr/local/go && wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz && sudo tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
-
+#172.67.73.191 source.quilibrium.com
 }
 
 
+function update1419(){
+  screen -X -S Quili quit && \
+  sudo rm -rf /usr/local/go && wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz && sudo tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz && \
+  cd ~/node/quili && cp -R ceremonyclient/node/.config ./ && \
+  mv ceremonyclient bak_ceremonyclient && git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git &&  \
+  cp -R .config ceremonyclient/node && cd ceremonyclient && git switch release-cdn && cd node/.config && apt update && apt install cpulimit gawk libgmp-dev && \
+  sed -i 's/^listenGrpcMultiaddr: ""$/listenGrpcMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8337"/' config.yml && \
+  sed -i 's/^listenRESTMultiaddr: ""$/listenRESTMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8338"/' config.yml && \
+  cd ~ && \
+  cargo install uniffi-bindgen-go --git https://github.com/NordSecurity/uniffi-bindgen-go --tag v0.2.1+v0.25.0 && \
+  cd ~/node/quili/ceremonyclient/vdf && ./generate.sh && cd ~/node/quili/ceremonyclient/node && \
+  screen -dmS Quili bash -c './release_autorun.sh'
+}
 
+# 节点安装功能
 # 节点安装功能
 function install_node_service() {
 
@@ -242,6 +252,7 @@ function main_menu() {
     echo "7. 独立启动挖矿（安装好常规节点后搭配使用）"
     echo "=========================备份功能================================"
     echo "8. 备份文件"
+    echo "9. 升级到1.4.19"
     read -p "请输入选项（1-8）: " OPTION
 
     case $OPTION in
@@ -253,6 +264,7 @@ function main_menu() {
     6) check_and_set_alias ;;
     7) run_node ;;
     8) backup_set ;;
+    9) update1419 ;;
     *) echo "无效选项。" ;;
     esac
 }
