@@ -2,7 +2,7 @@ docker run -d --network="host" --name tanssi -v "/var/lib/dancebox:/data" \
 -u $(id -u ${USER}):$(id -g ${USER}) \
 moondancelabs/tanssi \
 --chain=dancebox \
---name=ssonix \
+--name=ssonix999 \
 --sync=warp \
 --base-path=/data/para \
 --state-pruning=2000 \

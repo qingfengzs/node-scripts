@@ -40,6 +40,11 @@ apt install screen -y
 #    echo "Docker 已安装。"
 #fi
 
+screen -X -S pingpong quit
+
+docker stop pp-aioz pp-masq
+
+docker rm pp-aioz pp-masq
 #获取运行文件
 read -p "请输入你的key device id: " your_device_id
 

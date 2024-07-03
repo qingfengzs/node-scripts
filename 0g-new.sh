@@ -207,7 +207,7 @@ function install_storage_node() {
 
 
 # 克隆仓库
-git clone -b v0.2.0 https://github.com/0glabs/0g-storage-node.git
+git clone -b v0.3.1 https://github.com/0glabs/0g-storage-node.git
 
 #进入对应目录构建
 cd 0g-storage-node
