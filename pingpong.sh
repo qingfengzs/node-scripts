@@ -43,7 +43,9 @@ function install_node() {
 # 检查名为pingpong的screen会话是否存在
 if screen -list | grep -q "pingpong"; then
     # 如果存在，则执行退出命令
+    echo "存在pingpong,正在结束会话..."
     screen -X -S pingpong quit
+    echo "结束成功..."
 else
     # 如果不存在，则输出提示信息
     echo "pingpong已结束"
@@ -57,12 +59,14 @@ keyid="$your_device_id"
 # 下载PINGPONG程序
 wget -O PINGPONG https://pingpong-build.s3.ap-southeast-1.amazonaws.com/linux/latest/PINGPONG
 
-if [ -f "./PINGPONG" ]; then
-    chmod +x ./PINGPONG
-    screen -dmS pingpong bash -c "./PINGPONG --key \"$keyid\""
-else
-    echo "下载PINGPONG失败，请检查网络连接或URL是否正确。"
-fi
+chmod +x ./PINGPONG
+screen -dmS pingpong bash -c "./PINGPONG --key \"$keyid\""
+
+# if [ -f "./PINGPONG" ]; then
+
+# else
+#     echo "下载PINGPONG失败，请检查网络连接或URL是否正确。"
+# fi
 
  echo "节点已经启动，请使用screen -r pingpong 查看日志或使用脚本功能2"
 
