@@ -11,8 +11,8 @@ fi
 function install_node() {
 
 # 更新系统包列表
-sudo apt update
-apt install screen -y
+#sudo apt update
+#apt install screen -y
 
 ## 检查 Docker 是否已安装
 #if ! command -v docker &> /dev/null
@@ -40,11 +40,15 @@ apt install screen -y
 #    echo "Docker 已安装。"
 #fi
 
-screen -X -S pingpong quit
+# 检查名为pingpong的screen会话是否存在
+if screen -list | grep -q "pingpong"; then
+    # 如果存在，则执行退出命令
+    screen -X -S pingpong quit
+else
+    # 如果不存在，则输出提示信息
+    echo "pingpong已结束"
+fi
 
-docker stop pp-aioz pp-masq
-
-docker rm pp-aioz pp-masq
 #获取运行文件
 read -p "请输入你的key device id: " your_device_id
 
