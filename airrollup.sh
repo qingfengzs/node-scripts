@@ -90,10 +90,12 @@ systemctl daemon-reload && systemctl enable tracksd && systemctl restart tracksd
 journalctl -u tracksd -f
 
 # 12 跑python脚本
-while true; do python3 send.py; sleep 0.2; done
+while true; do python3 send.py; sleep 1; done
 
 # 看积分 链接leap
 https://points.airchains.io/
+# 设置定时重启
+sudo bash -c 'echo -e "#!/bin/bash\n\n# 等待15秒\necho \"等待15秒...\"\nsleep 15\n\n# 重启tracksd服务\necho \"重启tracksd服务...\"\nsystemctl restart tracksd\necho \"tracksd服务已重启\"" > $HOME/restart_services.sh && chmod +x $HOME/restart_services.sh && (crontab -l 2>/dev/null; echo "0 6 * * * $HOME/restart_services.sh") | crontab -'
 
 # 添加小狐狸RPC
 # 把rpc改成https://airchains-rpc.kubenode.xyz
