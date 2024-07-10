@@ -1,9 +1,3 @@
-# tracks/build/tracks init --daRpc "disperser-holesky.eigenda.xyz" --daKey "72d3aad021000911244768d8f78a0cff833efc450c23b4e66e1096b064cfbf5c35d98c658b57809b380b6e205a631d904dd4a2fc584154ea8d12f9e6169c942a" --daType "eigen" --moniker "ssonix-1" --stationRpc "http://127.0.0.1:8545" --stationAPI "http://127.0.0.1:8545" --stationType "evm"
-
-# tracks/build/tracks keys junction --accountName ssonix --accountPath $HOME/.tracks/junction-accounts/keys
-
-# tracks/build/tracks create-station --accountName ssonix --accountPath $HOME/.tracks/junction-accounts/keys --jsonRPC "https://airchains-rpc.kubenode.xyz/" --info "EVM Track" --tracks "air19ppt9qsww4qt8t7mpkc2wc0r9nu2tnfj6nqexx" --bootstrapNode "/ip4/154.12.242.62/tcp/2300/p2p/12D3KooWLcMFkzcuxGxJpJubkMBLr3U9k81hvcRsn6ZLsyNRDRCN"
-
 # 1
 apt update && apt install build-essential git make jq curl clang pkg-config libssl-dev -y  && \
 mkdir -p /data/airchains/ && cd /data/airchains/ && \
@@ -41,9 +35,6 @@ EOF
 
 # 5
 systemctl daemon-reload && systemctl enable evmosd && systemctl restart evmosd && systemctl status evmosd.service
-
-# 查看日志
-journalctl -u evmosd -f
 
 # 6
 wget https://github.com/airchains-network/tracks/releases/download/v0.0.2/eigenlayer && \
@@ -85,15 +76,25 @@ WantedBy=multi-user.target
 EOF
 
 # 11
-systemctl daemon-reload && systemctl enable tracksd && systemctl restart tracksd && pip3 install Web3
-# 看日志
-journalctl -u tracksd -f
+systemctl daemon-reload && systemctl enable tracksd && systemctl restart tracksd
+
+# 12
+apt update && apt install python3-pip
+pip3 install Web3
 
 # 12 跑python脚本
 while true; do python3 send.py; sleep 1; done
+#################################################################################
+# 看日志
+journalctl -u evmosd -f
+journalctl -u tracksd -f
+
+# 回滚tracksd
+/data/airchains/tracks/build/tracks rollback
 
 # 看积分 链接leap
 https://points.airchains.io/
+
 # 设置定时重启
 sudo bash -c 'echo -e "#!/bin/bash\n\n# 等待15秒\necho \"等待15秒...\"\nsleep 15\n\n# 重启tracksd服务\necho \"重启tracksd服务...\"\nsystemctl restart tracksd\necho \"tracksd服务已重启\"" > $HOME/restart_services.sh && chmod +x $HOME/restart_services.sh && (crontab -l 2>/dev/null; echo "0 6 * * * $HOME/restart_services.sh") | crontab -'
 
