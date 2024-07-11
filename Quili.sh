@@ -75,9 +75,10 @@ sudo apt install git ufw bison screen binutils gcc make bsdmainutils -y
 git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git
 
 # 进入ceremonyclient/node目录
-cd ceremonyclient/node
-git switch release
+cd ceremonyclient
+git switch release-cdn
 
+cd node
 # 赋予执行权限
 chmod +x release_autorun.sh
 
