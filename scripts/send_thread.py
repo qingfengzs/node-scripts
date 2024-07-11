@@ -8,8 +8,8 @@ rpc_url = "http://127.0.0.1:8545"  # 自定义的 RPC URL
 chain_id = 1234  # 自定义的链 ID
 
 # 钱包地址和私钥
-sender_address = "0x2Aff12A387fc4B04D5297aE5E2B85599b9FdF6E4"  # 发送者钱包地址
-sender_private_key = "865D05ECB712247DD8B6B7627ED402BDC574352406AA30162E0AB93A4D195ABD"  # 发送者钱包的私钥
+sender_address = ""  # 发送者钱包地址
+sender_private_key = ""  # 发送者钱包的私钥
 
 # 接收者钱包地址和转账金额（以最小单位表示）
 receiver_address = "0x2Aff12A387fc4B04D5297aE5E2B85599b9FdF6E4"  # 接收者钱包地址
