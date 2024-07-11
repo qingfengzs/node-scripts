@@ -12,7 +12,7 @@ sender_address = ""  # 发送者钱包地址
 sender_private_key = ""  # 发送者钱包的私钥
 
 # 接收者钱包地址和转账金额（以最小单位表示）
-receiver_address = "0x2Aff12A387fc4B04D5297aE5E2B85599b9FdF6E4"  # 接收者钱包地址
+receiver_address = ""  # 接收者钱包地址
 amount = 1000000000000000000  # 转账金额（示例为 1个币）
 
 # 创建 Web3 实例
